@@ -1,0 +1,38 @@
+services:
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: ./Dockerfile
+    container_name: youplayzone_frontend
+    image: youplayzone_frontend
+    restart: always
+    volumes:
+      - ./frontend:/var/www/html/personal/youplayzone/frontend
+    ports:
+      - "7070:3000"
+    depends_on:
+      - youplayzone_backend
+    env_file:
+      - ./frontend/.env  
+    networks:
+      - html_database_network
+
+  youplayzone_backend:
+    build:
+      context: ./backend
+      dockerfile: ./Dockerfile
+    container_name: youplayzone_backend
+    image: youplayzone_backend
+    restart: always
+    volumes:
+      - ./backend:/var/www/html/personal/youplayzone/backend
+    ports:
+      - "7075:5000"
+    env_file:
+      - ./backend/.env  
+    networks:
+      - html_database_network
+
+networks:
+  html_database_network:
+    external: true 
