@@ -70,3 +70,15 @@ body {
     @apply bg-background text-foreground;
   }
 }
+
+.css-13cymwt-control, .css-t3ipsp-control {
+  background-color: #0000 !important;
+}
+
+.css-tj5bde-Svg {
+  color: white !important;
+}
+
+.css-1nmdiq5-menu {
+  background-color: rgb(59, 57, 57) !important;
+}

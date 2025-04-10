@@ -1,0 +1,53 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model roles {
+  id                  Int      @id @default(autoincrement())
+  name                String   @unique
+  users               users[]
+  created_at          DateTime @default(now())
+  updated_at          DateTime @updatedAt
+}
+
+model users {
+  id                  Int      @id @default(autoincrement())
+  name                String
+  username            String   @unique
+  email               String   @unique
+  password            String
+  role_id             Int      @default(2)
+  role                roles    @relation(fields: [role_id], references: [id])
+  social_media        users_social_media[]
+  created_at          DateTime @default(now())
+  updated_at          DateTime @updatedAt
+}
+
+model social_media_platform {
+  id                  Int      @id @default(autoincrement())
+  name                String   @unique
+  users_social_media  users_social_media[]
+  created_at          DateTime @default(now())
+  updated_at          DateTime @updatedAt
+}
+
+model users_social_media {
+  id                  Int      @id @default(autoincrement())
+  social_media_id     Int
+  social_media        social_media_platform @relation(fields: [social_media_id], references: [id])
+  user_id             Int
+  user                users   @relation(fields: [user_id], references: [id])
+  created_at          DateTime @default(now())
+  updated_at          DateTime @updatedAt
+}
