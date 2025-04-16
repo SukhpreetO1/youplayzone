@@ -9,7 +9,7 @@ export default function Navbar() {
 
   return (
     <nav className="flex items-center justify-between p-4 border-b shadow-md bg-background">
-      <div className="text-xl font-bold hidden md:flex">MyApp</div>
+      <div className="text-xl font-bold hidden md:flex"><Link href="#">YouPlayZone</Link></div>
 
       <NavigationMenu className="hidden md:flex">
         <NavigationMenuList className="flex space-x-4">
@@ -40,7 +40,7 @@ export default function Navbar() {
       )}
 
 
-      <div className="flex gap-4">
+      <div className="flex md:gap-4">
         {/* Dark Mode Toggle */}
         <DropdownMenu>
           <DropdownMenuTrigger asChild>

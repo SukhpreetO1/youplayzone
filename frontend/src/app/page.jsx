@@ -1,9 +1,10 @@
-import { Navbar } from "@/app/routes/route";
+import { LandingPage, Navbar } from "@/app/routes/route";
 
 const HomePage = () => {
   return (
     <>
       <Navbar />
+      <LandingPage />
     </>
   );
 };

@@ -1,5 +1,5 @@
 services:
-  frontend:
+  youplayzone_frontend:
     build:
       context: ./frontend
       dockerfile: ./Dockerfile
@@ -9,7 +9,7 @@ services:
     volumes:
       - ./frontend:/var/www/html/personal/youplayzone/frontend
     ports:
-      - "7070:3000"
+      - "7060:3000"
     depends_on:
       - youplayzone_backend
     env_file:

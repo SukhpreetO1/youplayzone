@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { FORGOT_PASSWORD, LOGIN_URL, SIGNUP_URL, USER_DASHBOARD, HOME_URL, ADMIN_DASHBOARD } from '@/app/api/routes/route';
+import { FORGOT_PASSWORD, LOGIN_URL, SIGNUP_URL, DASHBOARD, HOME_URL, ADMIN_DASHBOARD } from '@/app/routes/route';
 
 export function middleware(request) {
   const path = request.nextUrl.pathname;
@@ -8,25 +8,18 @@ export function middleware(request) {
 
   const token = request.cookies?.get('current_user_token');
   const admin_token = request.cookies?.get('current_admin_token');
-  const super_admin_token = request.cookies?.get('current_super_admin_token');
-  if (!(token || admin_token || super_admin_token) && !(isPublicPath || path === HOME_URL)) {
+  if (!(token || admin_token) && !(isPublicPath || path === HOME_URL)) {
     return NextResponse.redirect(new URL(HOME_URL, request.url));
   }
 
   if (token && isPublicPath) {
-    return NextResponse.redirect(new URL(USER_DASHBOARD, request.url));
+    return NextResponse.redirect(new URL(DASHBOARD, request.url));
   } else if (token && path === HOME_URL) {
-    return NextResponse.redirect(new URL(USER_DASHBOARD, request.url));
+    return NextResponse.redirect(new URL(DASHBOARD, request.url));
   }
   if (admin_token && isPublicPath) {
     return NextResponse.redirect(new URL(ADMIN_DASHBOARD, request.url));
   } else if (admin_token && path === HOME_URL) {
-    return NextResponse.redirect(new URL(ADMIN_DASHBOARD, request.url));
-  }
-
-  if (super_admin_token && isPublicPath) {
-    return NextResponse.redirect(new URL(ADMIN_DASHBOARD, request.url));
-  } else if (super_admin_token && path === HOME_URL) {
     return NextResponse.redirect(new URL(ADMIN_DASHBOARD, request.url));
   }
 }

@@ -1,11 +1,55 @@
-import { cn, Button, Input, Label, Link, SIGNUP_URL, FORGOT_PASSWORD } from "@/app/routes/route.jsx";
+"use client"
+import { useState } from "react";
+import { cn, Button, Input, Label, Link, SIGNUP_URL, FORGOT_PASSWORD, useRouter, axiosInstance, POSTGRES_API_LOGIN, validate_login_submit_form, CryptoJS, toast, DASHBOARD } from "@/app/routes/route.jsx";
 
 export function LoginForm({
   className,
   ...props
 }) {
+  const router = useRouter();
+  const [errors, setErrors] = useState({});
+  const [formData, setFormData] = useState({
+    email: '',
+    password: ''
+  });
+
+  const handleInputChange = (e) => {
+    const { name, value } = e.target;
+    const validation_errors = validate_login_submit_form({ ...formData, [name]: value });
+    setFormData(prevFormData => ({ ...prevFormData, [name]: value }));
+    setErrors(prevErrors => ({ ...prevErrors, [name]: validation_errors[name] || null }));
+  };
+
+  const encryptPassword = (password) => {
+    return CryptoJS.AES.encrypt(password, process.env.NEXT_PUBLIC_SECRET_KEY).toString();
+  };
+
+  const formSubmit = async (e) => {
+    e.preventDefault();
+    const validation_errors = validate_login_submit_form(formData);
+
+    if (Object.keys(validation_errors).length > 0) {
+      setErrors(validation_errors);
+      return;
+    }
+
+    const encryptedPassword = encryptPassword(formData.password);
+    const formDataWithEncryptedPassword = { ...formData, password: encryptedPassword };
+
+    try {
+      const response = await axiosInstance.post(POSTGRES_API_LOGIN, { ...formDataWithEncryptedPassword });
+      console.log("response", response);
+
+      router.push(DASHBOARD);
+      toast.success(response.data.message);
+    } catch (error) {
+      console.log("error", error);
+      toast.error(error.response.data.message);
+    }
+  };
+
   return (
-    (<form className={cn("flex flex-col gap-6", className)} {...props}>
+    (<form className={cn("flex flex-col gap-6", className)} {...props} onSubmit={formSubmit}>
       <div className="flex flex-col items-center gap-2 text-center">
         <h1 className="text-2xl font-bold">Login to your account</h1>
         <p className="text-balance text-sm text-muted-foreground">
@@ -15,7 +59,8 @@ export function LoginForm({
       <div className="grid gap-6">
         <div className="grid gap-2">
           <Label htmlFor="email">Email</Label>
-          <Input id="email" type="email" placeholder="m@example.com" required />
+          <Input id="email" type="email" name="email" placeholder="m@example.com" value={formData.email} onChange={handleInputChange} error={errors.email} />
+          <span className={`${errors.email} text-red-500 font-semibold text-xs`} >{errors.email}</span>
         </div>
         <div className="grid gap-2">
           <div className="flex items-center">
@@ -24,7 +69,8 @@ export function LoginForm({
               Forgot your password?
             </Link>
           </div>
-          <Input id="password" type="password" required />
+          <Input id="password" type="password" name="password" value={formData.password} onChange={handleInputChange} error={errors.password} />
+          <span className={`${errors.password} text-red-500 font-semibold text-xs`} >{errors.email}</span>
         </div>
         <Button type="submit" className="w-full">
           Login
