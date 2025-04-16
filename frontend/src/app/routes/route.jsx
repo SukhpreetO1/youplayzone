@@ -31,10 +31,10 @@ export { validate_forgot_password_submit_form } from "@/utils/js/forgot_password
 
 
 // Components
-export { ThemeProvider } from "@/app/(common)/theme_provider/page.jsx";
-export { default as Navbar } from "@/app/(common)/navbar/page.jsx";
+export { ThemeProvider } from "@/app/(users)/theme_provider/page.jsx";
+export { default as Navbar } from "@/app/(users)/navbar/page.jsx";
 export { default as VideoPlayer } from "@/app/VideoPlayer/page.jsx";
-export { default as LandingPage } from "@/app/(common)/landing_page/page.jsx";
+export { default as LandingPage } from "@/app/(users)/landing_page/page.jsx";
 
 
 // API
