@@ -1,5 +1,10 @@
+/* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unsafe-assignment */
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { PrismaClient, Prisma } from '@prisma/client';
+import * as bcrypt from 'bcrypt';
+import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class UsersLoginSignupService {
@@ -13,6 +18,7 @@ export class UsersLoginSignupService {
     password: string,
   ): Promise<any> {
     try {
+      const hashedPassword: string = await bcrypt.hash(password, 10);
       const user = await this.prisma.users.create({
         data: {
           name,
@@ -21,7 +27,7 @@ export class UsersLoginSignupService {
           role: {
             connect: { id: 2 },
           },
-          password,
+          password: hashedPassword,
         },
       });
 
@@ -40,10 +46,25 @@ export class UsersLoginSignupService {
         }
       }
 
+      const user_data = await this.prisma.users.findUnique({
+        where: { id: user.id },
+      });
+
+      const secret = process.env.JWT_SECRET as string;
+      const token = jwt.sign(
+        {
+          id: user_data?.id,
+          email: user_data?.email,
+          role: user_data?.role_id,
+        },
+        secret,
+      );
+
       return {
-        statusCode: 201,
+        statusCode: 200,
         message: 'User registered successfully.',
-        data: user,
+        role: user.role_id,
+        access_token: token,
       };
     } catch (error) {
       if (
@@ -67,6 +88,45 @@ export class UsersLoginSignupService {
         {
           statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
           message: 'Something went wrong during user registration.',
+        },
+        HttpStatus.INTERNAL_SERVER_ERROR,
+      );
+    }
+  }
+
+  async login(email: string, password: string): Promise<any> {
+    try {
+      const user = await this.prisma.users.findUnique({
+        where: { email },
+      });
+
+      if (!user) {
+        return {
+          statusCode: 401,
+          message: 'Email not exists. Please sign up first.',
+          data: null,
+        };
+      }
+
+      if (user.password !== password) {
+        return {
+          statusCode: 401,
+          message: 'Invalid email or password.',
+          data: null,
+        };
+      }
+
+      return {
+        statusCode: 200,
+        message: 'Login successful.',
+        data: user,
+      };
+    } catch (error) {
+      console.log('Getting Error while login : ', error);
+      throw new HttpException(
+        {
+          statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
+          message: 'Something went wrong during login.',
         },
         HttpStatus.INTERNAL_SERVER_ERROR,
       );

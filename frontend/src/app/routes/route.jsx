@@ -4,6 +4,7 @@ export { default as axiosInstance } from "@/lib/axiosInstance"
 export { Label } from "@/app/ui/label"
 export { Input } from "@/app/ui/input.jsx";
 export { Button } from "@/app/ui/button.jsx";
+export { Cookies } from "js-cookie";
 export { NavigationMenu, NavigationMenuItem, NavigationMenuList } from "@/app/ui/navigation-menu";
 export { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/app/ui/dropdown-menu";
 

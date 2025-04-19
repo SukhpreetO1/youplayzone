@@ -1,6 +1,6 @@
 "use client"
 import { useState } from "react";
-import { cn, Button, Input, Label, Link, SIGNUP_URL, FORGOT_PASSWORD, useRouter, axiosInstance, POSTGRES_API_LOGIN, validate_login_submit_form, CryptoJS, toast, DASHBOARD } from "@/app/routes/route.jsx";
+import { cn, Button, Input, Label, Link, SIGNUP_URL, FORGOT_PASSWORD, useRouter, axiosInstance, POSTGRES_API_LOGIN, validate_login_submit_form, toast, DASHBOARD, ADMIN_DASHBOARD } from "@/app/routes/route.jsx";
 
 export function LoginForm({
   className,
@@ -20,10 +20,6 @@ export function LoginForm({
     setErrors(prevErrors => ({ ...prevErrors, [name]: validation_errors[name] || null }));
   };
 
-  const encryptPassword = (password) => {
-    return CryptoJS.AES.encrypt(password, process.env.NEXT_PUBLIC_SECRET_KEY).toString();
-  };
-
   const formSubmit = async (e) => {
     e.preventDefault();
     const validation_errors = validate_login_submit_form(formData);
@@ -33,14 +29,20 @@ export function LoginForm({
       return;
     }
 
-    const encryptedPassword = encryptPassword(formData.password);
-    const formDataWithEncryptedPassword = { ...formData, password: encryptedPassword };
-
     try {
-      const response = await axiosInstance.post(POSTGRES_API_LOGIN, { ...formDataWithEncryptedPassword });
+      const response = await axiosInstance.post(POSTGRES_API_LOGIN, { ...formData });
       console.log("response", response);
 
-      router.push(DASHBOARD);
+      if (response.data.statusCode !== 200) {
+        toast.error(response.data.message);
+        return;
+      } 
+
+      if (response.data.role == 1) {      
+        router.push(ADMIN_DASHBOARD);
+      } else if (response.data.role == 2) {
+        router.push(DASHBOARD);
+      }
       toast.success(response.data.message);
     } catch (error) {
       console.log("error", error);
