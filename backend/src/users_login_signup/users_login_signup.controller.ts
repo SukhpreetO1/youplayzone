@@ -34,12 +34,14 @@ export class UsersLoginSignupController {
       password,
     );
 
-    res.cookie('user_token', result.access_token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 60 * 60 * 1000, // 1 hour
-    });
+    if (result.statusCode === 200) {
+      res.cookie('user_token', result.access_token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'strict',
+        maxAge: 60 * 60 * 1000, // 1 hour
+      });
+    }
 
     res.status(result.statusCode);
     return result;
@@ -55,12 +57,24 @@ export class UsersLoginSignupController {
       email,
       password,
     );
-    res.cookie('user_token', result.access_token, {
-      httpOnly: true,
-      secure: process.env.NODE_ENV === 'production',
-      sameSite: 'strict',
-      maxAge: 60 * 60 * 1000,
-    });
+
+    if (result.statusCode === 200) {
+      if (result.role === 1) {
+        res.cookie('admin_token', result.access_token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'strict',
+          maxAge: 60 * 60 * 1000,
+        });
+      } else if (result.role === 2) {
+        res.cookie('user_token', result.access_token, {
+          httpOnly: true,
+          secure: process.env.NODE_ENV === 'production',
+          sameSite: 'strict',
+          maxAge: 60 * 60 * 1000,
+        });
+      }
+    }
 
     res.status(result.statusCode);
     return result;

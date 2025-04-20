@@ -31,8 +31,6 @@ export function LoginForm({
 
     try {
       const response = await axiosInstance.post(POSTGRES_API_LOGIN, { ...formData });
-      console.log("response", response);
-
       if (response.data.statusCode !== 200) {
         toast.error(response.data.message);
         return;

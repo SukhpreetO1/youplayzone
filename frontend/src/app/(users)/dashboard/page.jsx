@@ -1,5 +1,7 @@
 "use client";
 
+import Navbar from "../navbar/page";
+
 export default function Dashboard() {
     return (
         <>

@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Menu, Sun, Moon, Button, Link, useTheme, NavigationMenu, NavigationMenuItem, NavigationMenuList, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, LOGIN_URL, SIGNUP_URL } from "@/app/routes/route";
+import { Menu, Sun, Moon, Button, Link, useTheme, NavigationMenu, NavigationMenuItem, NavigationMenuList, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, LOGIN_URL, SIGNUP_URL, Avatar, AvatarImage, AvatarFallback, PROFILE } from "@/app/routes/route";
 
-export default function Navbar() {
+export default function Navbar({ isAuthenticated, user }) {
   const [isOpen, setIsOpen] = useState(false);
   const { setTheme, theme } = useTheme();
 
@@ -34,8 +34,13 @@ export default function Navbar() {
           <Link href="#"><Button variant="ghost" onClick={() => setIsOpen(false)}>Home</Button></Link>
           <Link href="#"><Button variant="ghost" onClick={() => setIsOpen(false)}>About</Button></Link>
           <Link href="#"><Button variant="ghost" onClick={() => setIsOpen(false)}>Contact</Button></Link>
-          <Link href="#"><Button variant="ghost" onClick={() => setIsOpen(false)}>Login</Button></Link>
-          <Link href="#"><Button variant="ghost" onClick={() => setIsOpen(false)}>Signup</Button></Link>
+          {!isAuthenticated ? (
+            <>
+              <Link href={LOGIN_URL}><Button variant="ghost" onClick={() => setIsOpen(false)}>Login</Button></Link>
+              <Link href={SIGNUP_URL}><Button variant="ghost" onClick={() => setIsOpen(false)}>Signup</Button></Link>
+            </>
+          ) : ""
+          }
         </div>
       )}
 
@@ -56,8 +61,31 @@ export default function Navbar() {
         </DropdownMenu>
 
         {/* Login/ Signup page */}
-        <Link href={LOGIN_URL}><Button variant="default" className="hidden md:flex">Login</Button></Link>
-        <Link href={SIGNUP_URL}><Button variant="secondary" className="hidden md:flex">Sign Up</Button></Link>
+        {isAuthenticated ? (
+          <>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Avatar className="cursor-pointer">
+                  <AvatarImage src="https://github.com/shadcn.png" />
+                  <AvatarFallback>Profile</AvatarFallback>
+                </Avatar>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem>{user.name}</DropdownMenuItem>
+                <DropdownMenuItem>
+                  <Link href={PROFILE}>Profile</Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => alert("Settings")}>Settings</DropdownMenuItem>
+                <DropdownMenuItem onClick={() => alert("Logout")}>Logout</DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </>
+        ) : (
+          <>
+            <Link href={LOGIN_URL}><Button variant="default" className="hidden md:flex">Login</Button></Link>
+            <Link href={SIGNUP_URL}><Button variant="secondary" className="hidden md:flex">Sign Up</Button></Link>
+          </>
+        )}
       </div>
     </nav>
   );

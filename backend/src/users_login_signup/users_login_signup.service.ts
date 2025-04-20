@@ -107,19 +107,30 @@ export class UsersLoginSignupService {
           data: null,
         };
       }
-
-      if (user.password !== password) {
+      const isPasswordValid = await bcrypt.compare(password, user.password);
+      if (!isPasswordValid) {
         return {
           statusCode: 401,
           message: 'Invalid email or password.',
           data: null,
         };
       }
+      const secret = process.env.JWT_SECRET as string;
+      const token = jwt.sign(
+        {
+          id: user.id,
+          email: user.email,
+          role: user.role_id,
+        },
+        secret,
+      );
 
       return {
         statusCode: 200,
         message: 'Login successful.',
         data: user,
+        access_token: token,
+        role: user.role_id,
       };
     } catch (error) {
       console.log('Getting Error while login : ', error);
