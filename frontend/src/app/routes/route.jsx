@@ -14,6 +14,8 @@ export { Avatar, AvatarImage, AvatarFallback } from "@/app/ui/avatar.jsx";
 export { LoginForm } from "@/components/LoginForm";
 export { SignUpForm } from "@/components/SignUpForm";
 export { ForgotPasswordForm } from "@/components/ForgotPasswordForm";
+export { ProfileForm } from "@/components/ProfileForm";
+export { ProfileAdditionalDetailsForm } from "@/components/ProfileAdditionalDetailsForm";
 
 
 // Other libraries
@@ -31,6 +33,8 @@ export { default as dotenv } from 'dotenv';
 export { validate_signup_submit_form } from "@/utils/js/signup";
 export { validate_login_submit_form } from "@/utils/js/login";
 export { validate_forgot_password_submit_form } from "@/utils/js/forgot_password";
+export { validate_additional_profile_form_submit_form } from "@/utils/js/additional_profile_form";
+export { validate_profile_submit_form } from "@/utils/js/profile_form";
 
 
 // Components
@@ -46,6 +50,8 @@ export const POSTGRES_API_SIGNUP = "/api/signup";
 export const POSTGRES_API_LOGIN = "/api/login";
 export const POSTGRES_API_FORGOT_PASSWORD = "/api/forgot_password";
 export const POSTGRES_API_PROFILE = "/api/profile";
+export const POSTGRES_PROFILE_UPDATE_DETAILS = "/api/profile_update";
+export const POSTGRES_API_ADDITIONAL_PROFILE_DETAILS = "/api/additional_profile_details";
 
 
 // Redirection routes

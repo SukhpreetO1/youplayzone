@@ -72,9 +72,9 @@ export default function Navbar({ isAuthenticated, user }) {
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
                 <DropdownMenuItem>{user.name}</DropdownMenuItem>
-                <DropdownMenuItem>
-                  <Link href={PROFILE}>Profile</Link>
-                </DropdownMenuItem>
+                <Link href={PROFILE}>
+                  <DropdownMenuItem className="cursor-pointer">Profile</DropdownMenuItem>
+                </Link>
                 <DropdownMenuItem onClick={() => alert("Settings")}>Settings</DropdownMenuItem>
                 <DropdownMenuItem onClick={() => alert("Logout")}>Logout</DropdownMenuItem>
               </DropdownMenuContent>

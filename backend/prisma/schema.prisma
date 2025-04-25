@@ -31,6 +31,7 @@ model users {
   role_id             Int      @default(2)
   role                roles    @relation(fields: [role_id], references: [id])
   social_media        users_social_media[]
+  additional_details  users_additional_details[]
   created_at          DateTime @default(now())
   updated_at          DateTime @updatedAt
 }
@@ -49,6 +50,15 @@ model users_social_media {
   social_media        social_media_platform @relation(fields: [social_media_id], references: [id])
   user_id             Int
   user                users   @relation(fields: [user_id], references: [id])
+  created_at          DateTime @default(now())
+  updated_at          DateTime @updatedAt
+}
+
+model users_additional_details {
+  id                  Int     @id @default(autoincrement())
+  user_id             Int     @unique
+  user                users   @relation(fields: [user_id], references: [id])
+  google_drive_link   String
   created_at          DateTime @default(now())
   updated_at          DateTime @updatedAt
 }
