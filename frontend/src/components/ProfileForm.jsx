@@ -1,13 +1,15 @@
 "use client";
 import { useEffect, useState } from "react";
 import Select from "react-select";
-import { cn, Button, Input, Label, validate_profile_submit_form, useRouter, axiosInstance, POSTGRES_PROFILE_UPDATE_DETAILS, toast, DASHBOARD } from "@/app/routes/route.jsx";
+import { cn, Button, Input, Label, validate_profile_submit_form, useRouter, axiosInstance, POSTGRES_PROFILE_UPDATE_DETAILS, toast, PROFILE } from "@/app/routes/route.jsx";
 
 export function ProfileForm({
   className,
   userDetails,
   ...props
 }) {
+  console.log("userDetails", userDetails);
+  
   const [selectedPlatforms, setSelectedPlatforms] = useState([]);
   const router = useRouter();
   const [errors, setErrors] = useState({});
@@ -29,12 +31,21 @@ export function ProfileForm({
 
   useEffect(() => {
     if (userDetails) {
-      setFormData(prev => ({
-        ...prev,
-        name: userDetails.name || '',
-        username: userDetails.username || '',
-        email: userDetails.email || '',
-      }));
+      if (Array.isArray(userDetails.social_media)) {
+        const ids = userDetails.social_media.map(item => item.social_media_id?.toString());
+        const selected = platformOptions.filter(option =>
+          ids.includes(option.value)
+        );
+        setFormData(prev => ({
+          ...prev,
+          name: userDetails.name || '',
+          username: userDetails.username || '',
+          email: userDetails.email || '',
+          social_platforms: ids,
+        }));
+
+        setSelectedPlatforms(selected);
+      }
     }
   }, [userDetails]);
 
@@ -73,7 +84,7 @@ export function ProfileForm({
         toast.error(response.data.message);
         return;
       }
-      router.push(DASHBOARD);
+      router.push(PROFILE);
       toast.success(response.data.message);
     } catch (error) {
       console.log("error", error);
