@@ -1,43 +1,18 @@
 "use client";
+import { HeroSection, FeaturesSection, HowItWorksSection, BenefitsSection, LiveDemoSection, TestimonialsSection, FinalCTASection, FooterSection } from "@/app/routes/route";
 import * as React from "react"
-import Autoplay from "embla-carousel-autoplay"
-
-import { Card, CardContent } from "@/app/ui/card"
-import {
-    Carousel,
-    CarouselContent,
-    CarouselItem,
-    CarouselNext,
-    CarouselPrevious,
-} from "@/app/ui/carousel"
 
 export default function LandingPage() {
-    const plugin = React.useRef(
-        Autoplay({ delay: 2000, stopOnInteraction: true })
-    )
-
     return (
-        <Carousel
-            plugins={[plugin.current]}
-            className="w-full max-w-sm"
-            onMouseEnter={plugin.current.stop}
-            onMouseLeave={plugin.current.reset}
-        >
-            <CarouselContent>
-                {Array.from({ length: 5 }).map((_, index) => (
-                    <CarouselItem key={index}>
-                        <div className="p-1">
-                            <Card>
-                                <CardContent className="flex items-center justify-center p-6">
-                                    <span className="text-4xl font-semibold">{index + 1}</span>
-                                </CardContent>
-                            </Card>
-                        </div>
-                    </CarouselItem>
-                ))}
-            </CarouselContent>
-            <CarouselPrevious />
-            <CarouselNext />
-        </Carousel>
+        <>
+            <HeroSection />
+            <FeaturesSection />
+            <HowItWorksSection />
+            <BenefitsSection />
+            <LiveDemoSection />
+            <TestimonialsSection />
+            <FinalCTASection />
+            <FooterSection />
+        </>
     )
 }

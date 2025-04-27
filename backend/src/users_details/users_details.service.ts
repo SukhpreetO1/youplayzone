@@ -25,15 +25,18 @@ export class UsersDetailsService {
       const decoded: any = jwt.verify(token, process.env.JWT_SECRET);
       const user = await this.prisma.users.findUnique({
         where: { id: decoded.id },
+        include: {
+          additional_details: true,
+          social_media: {
+            include: {
+              social_media: true,
+            },
+          },
+        },
       });
-
-      const users_additional_details = await this.prisma.users_additional_details.findUnique({
-        where: { user_id: decoded.id },
-      })
 
       return {
         user,
-        users_additional_details,
       };
     } catch (error) {
       console.error('Error decoding the token or fetching user data:', error);

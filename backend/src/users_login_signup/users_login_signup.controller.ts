@@ -79,4 +79,12 @@ export class UsersLoginSignupController {
     res.status(result.statusCode);
     return result;
   }
+
+  @Post('logout')
+  logout(@Res({ passthrough: true }) res: Response) {
+    res.clearCookie('user_token');
+    res.clearCookie('admin_token');
+
+    return { message: 'Logged out successfully' };
+  }
 }

@@ -11,7 +11,7 @@ const Profile = () => {
         const response = await axiosInstance.get(POSTGRES_API_PROFILE);
         if (response.status === 200) {
           const userData = response.data.user;
-          const userAdditionalDetails = response.data.users_additional_details;
+          const userAdditionalDetails = response.data.user.additional_details[0];
           setUserDetails(userData);
           setUserAdditionalDetails(userAdditionalDetails);
         }

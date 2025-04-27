@@ -65,12 +65,12 @@ export function LoginForm({
         <div className="grid gap-2">
           <div className="flex items-center">
             <Label htmlFor="password">Password</Label>
-            <Link href={FORGOT_PASSWORD} className="ml-auto text-sm underline-offset-4 hover:underline">
-              Forgot your password?
-            </Link>
           </div>
           <Input id="password" type="password" name="password" value={formData.password} onChange={handleInputChange} error={errors.password} />
           <span className={`${errors.password} text-red-500 font-semibold text-xs`} >{errors.email}</span>
+          <Link href={FORGOT_PASSWORD} className="ml-auto text-sm underline-offset-4 hover:underline">
+            Forgot your password?
+          </Link>
         </div>
         <Button type="submit" className="w-full">
           Login

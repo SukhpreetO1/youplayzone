@@ -1,7 +1,7 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import "react-toastify/dist/ReactToastify.css";
-import { ThemeProvider, ToastContainer } from "@/app/routes/route";
+import { ToastContainer } from "@/app/routes/route";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,10 +22,8 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`} >
-        <ThemeProvider attribute="class" defaultTheme="system" enableSystem disableTransitionOnChange>
-          {children}
-          <ToastContainer position="top-right" />
-        </ThemeProvider>
+        {children}
+        <ToastContainer position="top-right" />
       </body>
     </html>
   );

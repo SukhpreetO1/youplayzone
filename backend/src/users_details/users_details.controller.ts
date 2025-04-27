@@ -7,7 +7,6 @@ import {
   HttpStatus,
   Post,
   Body,
-  Res,
 } from '@nestjs/common';
 import { UsersDetailsService } from './users_details.service';
 

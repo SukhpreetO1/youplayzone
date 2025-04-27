@@ -9,6 +9,7 @@ export { Button } from "@/app/ui/button.jsx";
 export { NavigationMenu, NavigationMenuItem, NavigationMenuList } from "@/app/ui/navigation-menu";
 export { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/app/ui/dropdown-menu";
 export { Avatar, AvatarImage, AvatarFallback } from "@/app/ui/avatar.jsx";
+export { Card } from "@/app/ui/card";
 
 
 export { LoginForm } from "@/components/LoginForm";
@@ -16,6 +17,14 @@ export { SignUpForm } from "@/components/SignUpForm";
 export { ForgotPasswordForm } from "@/components/ForgotPasswordForm";
 export { ProfileForm } from "@/components/ProfileForm";
 export { ProfileAdditionalDetailsForm } from "@/components/ProfileAdditionalDetailsForm";
+export { HeroSection } from "@/components/(landing_page)/HeroSection"
+export { FeaturesSection } from "@/components/(landing_page)/FeaturesSection"
+export { HowItWorksSection } from "@/components/(landing_page)/HowItWorksSection"
+export { BenefitsSection } from "@/components/(landing_page)/BenefitsSection"
+export { LiveDemoSection } from "@/components/(landing_page)/LiveDemoSection"
+export { TestimonialsSection } from "@/components/(landing_page)/TestimonialsSection"
+export { FinalCTASection } from "@/components/(landing_page)/FinalCTASection"
+export { FooterSection } from "@/components/FooterSection"
 
 
 // Other libraries
@@ -38,7 +47,6 @@ export { validate_profile_submit_form } from "@/utils/js/profile_form";
 
 
 // Components
-export { ThemeProvider } from "@/app/(users)/theme_provider/page.jsx";
 export { default as Navbar } from "@/app/(users)/navbar/page.jsx";
 export { default as VideoPlayer } from "@/app/VideoPlayer/page.jsx";
 export { default as LandingPage } from "@/app/(users)/landing_page/page.jsx";
@@ -52,11 +60,23 @@ export const POSTGRES_API_FORGOT_PASSWORD = "/api/forgot_password";
 export const POSTGRES_API_PROFILE = "/api/profile";
 export const POSTGRES_PROFILE_UPDATE_DETAILS = "/api/profile_update";
 export const POSTGRES_API_ADDITIONAL_PROFILE_DETAILS = "/api/additional_profile_details";
+export const POSTGRES_API_LOGOUT = "/api/logout";
+
+
+// images path
+export const HOMEPAGE_IMAGE = "/placeholder.svg";
+export const CLOCK = "/images/clock.png";
+export const EYE = "/images/eye.png";
+export const GOOGLE_DRIVE = "/images/google_drive.png";
+export const LINKEDIN = "/images/linkedin.png";
+export const NEXT_ARROW = "/images/next.png";
+export const RISING = "/images/rising.png";
+export const ROCKET = "/images/rocket.png";
+export const TWITTER = "/images/twitter-x.png";
+export const YOUTUBE = "/images/youtube.png";
 
 
 // Redirection routes
-export const HOMEPAGE_IMAGE = "/placeholder.svg";
-
 export const HOME_URL = "/";
 export const LOGIN_URL = "/login";
 export const SIGNUP_URL = "/signup";

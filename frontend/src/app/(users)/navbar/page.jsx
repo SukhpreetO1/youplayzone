@@ -1,27 +1,40 @@
 "use client";
 
-import { useState } from "react";
-import { Menu, Sun, Moon, Button, Link, useTheme, NavigationMenu, NavigationMenuItem, NavigationMenuList, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, LOGIN_URL, SIGNUP_URL, Avatar, AvatarImage, AvatarFallback, PROFILE } from "@/app/routes/route";
+import { useEffect, useState } from "react";
+import { Menu, Button, Link, NavigationMenu, NavigationMenuItem, NavigationMenuList, DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, LOGIN_URL, SIGNUP_URL, Avatar, AvatarImage, AvatarFallback, PROFILE, axiosInstance, toast, useRouter, HOME_URL, POSTGRES_API_LOGOUT } from "@/app/routes/route";
 
 export default function Navbar({ isAuthenticated, user }) {
   const [isOpen, setIsOpen] = useState(false);
-  const { setTheme, theme } = useTheme();
+  const [socialPlatform, setSocicalPlatform] = useState([]);
+  const router = useRouter();
+  
+  const handleLogout = async () => {
+    const response = await axiosInstance.post(POSTGRES_API_LOGOUT);
+    toast.success(response.data.message);
+    router.push(HOME_URL);
+  };
+
+  useEffect(() => {
+    if (user && user.user && user.user.social_media) {
+      setSocicalPlatform(user.user.social_media);
+    }
+  }, [user])  
 
   return (
-    <nav className="flex items-center justify-between p-4 border-b shadow-md bg-background">
-      <div className="text-xl font-bold hidden md:flex"><Link href="#">YouPlayZone</Link></div>
+    <nav className="flex items-center justify-between p-4 border-b shadow-md bg-white">
+      <div className="text-xl font-bold hidden md:flex"><Link href={HOME_URL}>YouPlayZone</Link></div>
 
       <NavigationMenu className="hidden md:flex">
         <NavigationMenuList className="flex space-x-4">
-          <NavigationMenuItem>
-            <Link href="#"><Button variant="ghost">Home</Button></Link>
-          </NavigationMenuItem>
-          <NavigationMenuItem>
-            <Link href="#"><Button variant="ghost">About</Button></Link>
-          </NavigationMenuItem>
-          <NavigationMenuItem>
-            <Link href="#"><Button variant="ghost">Contact</Button></Link>
-          </NavigationMenuItem>
+          {socialPlatform.length > 0 && socialPlatform.map((platform, index) => (
+            <NavigationMenuItem key={index}>
+              <Link href={`/${platform.social_media.name.toLowerCase()}`} passHref>
+                <Button variant="ghost" className="capitalize">
+                  {platform.social_media.name}
+                </Button>
+              </Link>
+            </NavigationMenuItem>
+          ))}
         </NavigationMenuList>
       </NavigationMenu>
 
@@ -30,10 +43,15 @@ export default function Navbar({ isAuthenticated, user }) {
       </Button>
 
       {isOpen && (
-        <div className="absolute top-16 left-0 w-full bg-background shadow-md flex flex-col items-center p-4 space-y-2 md:hidden">
-          <Link href="#"><Button variant="ghost" onClick={() => setIsOpen(false)}>Home</Button></Link>
+        <div className="absolute top-16 left-0 w-full shadow-md flex flex-col items-center p-4 space-y-2 md:hidden">
+          {/* <Link href="#"><Button variant="ghost" onClick={() => setIsOpen(false)}>Home</Button></Link>
           <Link href="#"><Button variant="ghost" onClick={() => setIsOpen(false)}>About</Button></Link>
-          <Link href="#"><Button variant="ghost" onClick={() => setIsOpen(false)}>Contact</Button></Link>
+          <Link href="#"><Button variant="ghost" onClick={() => setIsOpen(false)}>Contact</Button></Link> */}
+          {socialPlatform.length > 0 && socialPlatform.map((platform, index) => (
+            <Link href={`/${platform.social_media.name.toLowerCase()}`} passHref key={index}>
+              {platform.social_media.name}
+            </Link>
+          ))}
           {!isAuthenticated ? (
             <>
               <Link href={LOGIN_URL}><Button variant="ghost" onClick={() => setIsOpen(false)}>Login</Button></Link>
@@ -46,20 +64,6 @@ export default function Navbar({ isAuthenticated, user }) {
 
 
       <div className="flex md:gap-4">
-        {/* Dark Mode Toggle */}
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="ghost">
-              {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuItem onClick={() => setTheme("light")}>Light</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme("dark")}>Dark</DropdownMenuItem>
-            <DropdownMenuItem onClick={() => setTheme("system")}>System</DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
-
         {/* Login/ Signup page */}
         {isAuthenticated ? (
           <>
@@ -71,19 +75,19 @@ export default function Navbar({ isAuthenticated, user }) {
                 </Avatar>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem>{user.name}</DropdownMenuItem>
+                <DropdownMenuItem>{user.user.name}</DropdownMenuItem>
                 <Link href={PROFILE}>
                   <DropdownMenuItem className="cursor-pointer">Profile</DropdownMenuItem>
                 </Link>
                 <DropdownMenuItem onClick={() => alert("Settings")}>Settings</DropdownMenuItem>
-                <DropdownMenuItem onClick={() => alert("Logout")}>Logout</DropdownMenuItem>
+                <DropdownMenuItem onClick={handleLogout} className = "cursor-pointer">Logout</DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
           </>
         ) : (
           <>
-            <Link href={LOGIN_URL}><Button variant="default" className="hidden md:flex">Login</Button></Link>
-            <Link href={SIGNUP_URL}><Button variant="secondary" className="hidden md:flex">Sign Up</Button></Link>
+            <Link href={LOGIN_URL}><Button variant="secondary" className="hidden md:flex transition duration-300 hover:bg-gray-200 hover:text-blue-700 px-4 py-2">Login</Button></Link>
+            <Link href={SIGNUP_URL}><Button variant="destructive" className="hidden md:flex transition duration-300 hover:brightness-110 hover:scale-[1.02] px-4 py-2">Sign Up</Button></Link>
           </>
         )}
       </div>
