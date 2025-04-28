@@ -59,6 +59,9 @@ model users_additional_details {
   user_id             Int     @unique
   user                users   @relation(fields: [user_id], references: [id])
   google_drive_link   String
-  created_at          DateTime @default(now())
-  updated_at          DateTime @updatedAt
+  youtube_connected   Boolean   @default(false)
+  youtube_tokens      Json?
+  refresh_token       String?
+  created_at          DateTime  @default(now())
+  updated_at          DateTime  @updatedAt
 }

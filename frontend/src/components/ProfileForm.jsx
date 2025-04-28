@@ -8,8 +8,6 @@ export function ProfileForm({
   userDetails,
   ...props
 }) {
-  console.log("userDetails", userDetails);
-  
   const [selectedPlatforms, setSelectedPlatforms] = useState([]);
   const router = useRouter();
   const [errors, setErrors] = useState({});

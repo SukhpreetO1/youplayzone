@@ -48,7 +48,7 @@ export { validate_profile_submit_form } from "@/utils/js/profile_form";
 
 // Components
 export { default as Navbar } from "@/app/(users)/navbar/page.jsx";
-export { default as VideoPlayer } from "@/app/VideoPlayer/page.jsx";
+// export { default as VideoPlayer } from "@/app/VideoPlayer/page.jsx";
 export { default as LandingPage } from "@/app/(users)/landing_page/page.jsx";
 
 
@@ -57,10 +57,11 @@ export const POSTGRES_ROLE_DATA = "/api/role";
 export const POSTGRES_API_SIGNUP = "/api/signup";
 export const POSTGRES_API_LOGIN = "/api/login";
 export const POSTGRES_API_FORGOT_PASSWORD = "/api/forgot_password";
+export const POSTGRES_API_LOGOUT = "/api/logout";
 export const POSTGRES_API_PROFILE = "/api/profile";
 export const POSTGRES_PROFILE_UPDATE_DETAILS = "/api/profile_update";
 export const POSTGRES_API_ADDITIONAL_PROFILE_DETAILS = "/api/additional_profile_details";
-export const POSTGRES_API_LOGOUT = "/api/logout";
+export const POSTGRES_API_YOUTUBE_CONNECTION = "/api/youtube_connection/connect";
 
 
 // images path
